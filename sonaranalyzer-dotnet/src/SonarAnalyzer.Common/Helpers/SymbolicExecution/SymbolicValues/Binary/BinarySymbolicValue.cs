@@ -20,6 +20,9 @@
 
 namespace SonarAnalyzer.Helpers.FlowAnalysis.Common
 {
+    // todo VT: check if any of the operands is NullableSymbolicValue, if so,
+    // then the binary operator is a lifted operator, so null constraint checks 
+    // need to be added 
     public class BinarySymbolicValue : SymbolicValue
     {
         public SymbolicValue LeftOperand { get; }

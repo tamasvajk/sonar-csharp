@@ -18,6 +18,7 @@
  * Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
  */
 
+using Microsoft.CodeAnalysis;
 using System;
 using System.Collections.Generic;
 using System.Collections.Immutable;
@@ -76,12 +77,28 @@ namespace SonarAnalyzer.Helpers.FlowAnalysis.Common
                 return "SV_NULL";
             }
         }
-
-        private readonly object identifier;
+        
+        protected readonly object identifier;
 
         private static int SymbolicValueCounter = 0;
 
-        internal SymbolicValue()
+        internal static SymbolicValue GetSymbolicValue()
+        {
+            return GetSymbolicValue(null);
+        }
+
+        internal static SymbolicValue GetSymbolicValue(ITypeSymbol type)
+        {
+            if (type != null &&
+                type.OriginalDefinition.Is(KnownType.System_Nullable_T))
+            {
+                return new NullableSymbolicValue();
+            }
+
+            return new SymbolicValue();
+        }
+
+        protected SymbolicValue()
             : this(SymbolicValueCounter++)
         {
         }

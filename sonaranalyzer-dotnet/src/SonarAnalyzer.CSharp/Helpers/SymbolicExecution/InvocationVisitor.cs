@@ -44,6 +44,7 @@ namespace SonarAnalyzer.Helpers.FlowAnalysis.Common
         internal ProgramState ProcessInvocation()
         {
             var symbol = semanticModel.GetSymbolInfo(invocation).Symbol;
+            var type = semanticModel.GetTypeInfo(invocation).Type;
 
             var methodSymbol = symbol as IMethodSymbol;
             var invocationArgsCount = invocation.ArgumentList?.Arguments.Count ?? 0;
@@ -75,7 +76,7 @@ namespace SonarAnalyzer.Helpers.FlowAnalysis.Common
 
             return programState
                 .PopValues(invocationArgsCount + 1)
-                .PushValue(new SymbolicValue());
+                .PushValue(SymbolicValue.GetSymbolicValue(type));
         }
 
         private ProgramState HandleNameofExpression(int argumentsCount)
@@ -86,7 +87,7 @@ namespace SonarAnalyzer.Helpers.FlowAnalysis.Common
                 .PopValues(argumentsCount)
                 .PopValue();
 
-            var nameof = new SymbolicValue();
+            var nameof = SymbolicValue.GetSymbolicValue();
             newProgramState = newProgramState.PushValue(nameof);
             return nameof.SetConstraint(ObjectConstraint.NotNull, newProgramState);
         }
@@ -105,7 +106,8 @@ namespace SonarAnalyzer.Helpers.FlowAnalysis.Common
                 return newProgramState.PushValue(SymbolicValue.True);
             }
 
-            return newProgramState.PushValue(new SymbolicValue());
+            // string null checks never return Nullable<T>
+            return newProgramState.PushValue(SymbolicValue.GetSymbolicValue());
         }
 
         private ProgramState HandleStaticEqualsCall()

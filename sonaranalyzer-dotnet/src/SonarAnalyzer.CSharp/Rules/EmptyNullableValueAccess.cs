@@ -149,10 +149,14 @@ namespace SonarAnalyzer.Rules.CSharp
             {
                 if (IsHasValueAccess(instruction))
                 {
-                    SymbolicValue nullable;
-                    newProgramState = programState.PopValue(out nullable);
-                    newProgramState = newProgramState.PushValue(new HasValueAccessSymbolicValue(nullable));
-                    return true;
+                    SymbolicValue sv;
+                    newProgramState = programState.PopValue(out sv);
+                    var nullableSymbolicValue = sv as NullableSymbolicValue;
+                    if (nullableSymbolicValue != null)
+                    {
+                        newProgramState = newProgramState.PushValue(new HasValueAccessSymbolicValue(nullableSymbolicValue));
+                        return true;
+                    }
                 }
 
                 newProgramState = programState;
@@ -162,7 +166,7 @@ namespace SonarAnalyzer.Rules.CSharp
 
         internal sealed class HasValueAccessSymbolicValue : MemberAccessSymbolicValue
         {
-            public HasValueAccessSymbolicValue(SymbolicValue nullable)
+            public HasValueAccessSymbolicValue(NullableSymbolicValue nullable)
                 : base(nullable, HasValueLiteral)
             {
             }

@@ -37,6 +37,10 @@ namespace Tests.Diagnostics
 
         public void TestNull()
         {
+            // todo VT: problem with Nullable <- NULL assignment.
+            // the same would happen in case of a cast, implicit cast, 'as', or 
+            // int? i = 5; (5 is a SV and not a NullableSV)
+            // the SymbolicValue should be converted to NullableSymbolicValue
             int? i1 = null;
             if (i1.HasValue)
             {

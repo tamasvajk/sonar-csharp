@@ -97,8 +97,10 @@
     <Compile Include="Helpers\SymbolicExecution\Constraints\*.cs" />
     <Compile Include="Helpers\SymbolicExecution\Relationships\*.cs" />
     <Compile Include="Helpers\SymbolicExecution\SymbolicValues\Binary\*.cs" />
+    <Compile Include="Helpers\SymbolicExecution\SymbolicValues\NullableSymbolicValue.cs" />
     <Compile Include="Helpers\SymbolicExecution\SymbolicValues\Unary\*.cs" />
-    <Compile Include="Helpers\SymbolicExecution\SymbolicValues\*.cs" />
+    <Compile Include="Helpers\SymbolicExecution\SymbolicValues\MemberAccessSymbolicValue.cs" />
+    <Compile Include="Helpers\SymbolicExecution\SymbolicValues\SymbolicValue.cs" />
     <Compile Include="Helpers\SymbolicExecution\*.cs" />
     <Compile Include="Helpers\*.cs" />
     <Compile Include="Metrics\*.cs" />
